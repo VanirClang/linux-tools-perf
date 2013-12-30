@@ -14,6 +14,16 @@
 #include "event.h"
 #include "symbol.h"
 
+#if defined(__clang__) && defined(ANDROID)
+/* Android doesn't have TLS, and trying to use it with clang
+ * results in undefined references to __aeabi_read_tp. Not
+ * sure why this doesn't happen with gcc...
+ * This is not a proper fix, but should be good enough to
+ * get us started.
+ */
+#define __thread
+#endif
+
 enum chain_mode {
 	CHAIN_NONE,
 	CHAIN_FLAT,
